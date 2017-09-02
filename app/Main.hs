@@ -1,6 +1,7 @@
 import Control.Concurrent (ThreadId, forkIO)
 import Control.Concurrent.STM (TVar, atomically, newTVarIO, readTVar, retry, writeTVar)
 import Control.Monad (unless)
+import Control.Parallel.Strategies (parMap, rpar)
 import System.Environment (getArgs)
 
 fib :: Int -> Int
@@ -27,11 +28,17 @@ fork = do
   fork' :: TVar Int -> IO () -> IO ThreadId
   fork' tv p = forkIO $ p >> atomically (readTVar tv >>= writeTVar tv . succ)
 
+eval :: IO ()
+eval = do
+  let as = parMap rpar fib [39, 40, 41, 42]
+  mapM_ print as
+
 main :: IO ()
 main = do
   args <- getArgs
   case args of
     ("normal":_) -> normal
     ("fork":_) -> fork
+    ("eval":_) -> eval
     _ -> return ()
 
