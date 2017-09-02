@@ -9,6 +9,22 @@ fib 0 = 0
 fib 1 = 1
 fib n = fib (n - 2) + fib (n - 1)
 
+once :: IO ()
+once = print $ fib 42
+
+fourTimes1 :: IO ()
+fourTimes1 = do
+  print $ fib 42
+  print $ fib 42
+  print $ fib 42
+  print $ fib 42
+
+fourTimes2 :: IO ()
+fourTimes2 = mapM_ (print . fib) [42, 42, 42, 42]
+
+fourTimes3 :: IO ()
+fourTimes3 = mapM_ (\_ -> print $ fib 42) [(), (), (), ()]
+
 normal :: IO ()
 normal = do
   print $ fib 39
@@ -37,6 +53,10 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
+    ("once":_) -> once
+    ("fourtimes1":_) -> fourTimes1
+    ("fourtimes2":_) -> fourTimes2
+    ("fourtimes3":_) -> fourTimes3
     ("normal":_) -> normal
     ("fork":_) -> fork
     ("eval":_) -> eval
