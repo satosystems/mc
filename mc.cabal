@@ -1,7 +1,5 @@
 name:                mc
 version:             0.1.0.0
--- synopsis:
--- description:
 homepage:            https://github.com/satosystems/mc#readme
 license:             BSD3
 license-file:        LICENSE
@@ -13,29 +11,16 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
 
-library
-  hs-source-dirs:      src
-  exposed-modules:     Lib
-  build-depends:       base >= 4.7 && < 5
-  default-language:    Haskell2010
-
-executable mc-exe
+executable mc
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -O2 -Wall
   build-depends:       base
-                     , mc
-  default-language:    Haskell2010
-
-test-suite mc-test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
-  build-depends:       base
-                     , mc
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                     , parallel
+                     , stm
   default-language:    Haskell2010
 
 source-repository head
   type:     git
   location: https://github.com/satosystems/mc
+
