@@ -1,4 +1,5 @@
 import Control.Concurrent (ThreadId, forkIO)
+import Control.Concurrent.Async (mapConcurrently_)
 import Control.Concurrent.STM (TVar, atomically, newTVarIO, readTVar, retry, writeTVar)
 import Control.Monad (unless)
 import Control.Parallel.Strategies (parMap, rpar)
@@ -44,6 +45,9 @@ fork = do
   fork' :: TVar Int -> IO () -> IO ThreadId
   fork' tv p = forkIO $ p >> atomically (readTVar tv >>= writeTVar tv . succ)
 
+async :: IO ()
+async = mapConcurrently_ (print . fib) [39, 40, 41, 42]
+
 eval :: IO ()
 eval = do
   let as = parMap rpar fib [39, 40, 41, 42]
@@ -59,6 +63,7 @@ main = do
     ("fourtimes3":_) -> fourTimes3
     ("normal":_) -> normal
     ("fork":_) -> fork
+    ("async":_) -> async
     ("eval":_) -> eval
     _ -> return ()
 
