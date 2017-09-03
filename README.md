@@ -13,6 +13,7 @@ $ stack build
 ```
 $ stack exec mc -- normal +RTS -s -N4
 $ stack exec mc -- fork +RTS -s -N4
+$ stack exec mc -- async +RTS -s -N4
 $ stack exec mc -- eval +RTS -s -N4
 ```
 
